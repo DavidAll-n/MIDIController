@@ -13,10 +13,6 @@ class MIDICommand {
         int Command;
         int ParamOne;
         int ParamTwo;
-        static int NOTEON;
-        static int NOTEOFF;
-        static int PITCHBEND;
-        static int CONTROL;
 
         MIDICommand(int command, int paramOne, int paramTwo);
 };

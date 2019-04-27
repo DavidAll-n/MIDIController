@@ -1,3 +1,4 @@
+#include "MIDICommands.h"
 #include "MIDIController.h"
 #include "ShiftRegister.h"
 #include "MIDICommand.h"
@@ -45,18 +46,18 @@ MIDIController::MIDIController() {
     registers[6].Initialize(PIN_SS7, 7, 8);
     registers[7].Initialize(PIN_SS8, 8, 8);
     
-    controls[0].Initialize(MIDICommand::CONTROL, 1, 1); // Mod
-    controls[1].Initialize(MIDICommand::CONTROL, 2, 10); // Pan
-    controls[2].Initialize(MIDICommand::CONTROL, 3, 11); // Expression
-    controls[3].Initialize(MIDICommand::CONTROL, 4, 71); // Resonance
-    controls[4].Initialize(MIDICommand::CONTROL, 5, 72); // Decay
-    controls[5].Initialize(MIDICommand::CONTROL, 6, 73); // Attack
-    controls[6].Initialize(MIDICommand::CONTROL, 7, 74); // Frequency
-    controls[7].Initialize(MIDICommand::CONTROL, 8, 80); // Tone One
-    controls[8].Initialize(MIDICommand::CONTROL, 9, 81); // Tone Two
-    controls[9].Initialize(MIDICommand::CONTROL, 10, 82); // Tone Three
-    controls[10].Initialize(MIDICommand::CONTROL, 11, 83); // Tone Four
-    controls[11].Initialize(MIDICommand::PITCHBEND, 12, 127); // Pitch Bend
+    controls[0].Initialize(MIDICommands::CONTROL, 1, 1); // Mod
+    controls[1].Initialize(MIDICommands::CONTROL, 2, 10); // Pan
+    controls[2].Initialize(MIDICommands::CONTROL, 3, 11); // Expression
+    controls[3].Initialize(MIDICommands::CONTROL, 4, 71); // Resonance
+    controls[4].Initialize(MIDICommands::CONTROL, 5, 72); // Decay
+    controls[5].Initialize(MIDICommands::CONTROL, 6, 73); // Attack
+    controls[6].Initialize(MIDICommands::CONTROL, 7, 74); // Frequency
+    controls[7].Initialize(MIDICommands::CONTROL, 8, 80); // Tone One
+    controls[8].Initialize(MIDICommands::CONTROL, 9, 81); // Tone Two
+    controls[9].Initialize(MIDICommands::CONTROL, 10, 82); // Tone Three
+    controls[10].Initialize(MIDICommands::CONTROL, 11, 83); // Tone Four
+    controls[11].Initialize(MIDICommands::PITCHBEND, 12, 127); // Pitch Bend
 }
 
 ShiftRegister* MIDIController::GetRegisters() {
@@ -78,10 +79,10 @@ void MIDIController::UpdateControl(int index) {
 void MIDIController::UpdateRegister(int index, long debounceIn) {
     Note* notes = registers[index].Update(debounceIn, Octave);
     for(int p = 0; p < sizeof(notes); p++) {
-        MIDICommand command = MIDICommand(MIDICommand::NOTEON, notes[p].NoteNumber, GetVelocity());
+        MIDICommand command = MIDICommand(MIDICommands::NOTEON, notes[p].NoteNumber, GetVelocity());
         
         if (notes[p].Value == 1) {
-            command.Command = MIDICommand::NOTEOFF;
+            command.Command = MIDICommands::NOTEOFF;
         }
 
         SendMIDI(command);
@@ -93,10 +94,10 @@ void MIDIController::UpdateRegisters(long debounceIn) {
         Note* notes = registers[i].Update(debounceIn, Octave);
         for(int p = 0; p < sizeof(registers); p++) {
             
-            MIDICommand command = MIDICommand(MIDICommand::NOTEON, notes[p].NoteNumber, GetVelocity());
+            MIDICommand command = MIDICommand(MIDICommands::NOTEON, notes[p].NoteNumber, GetVelocity());
             
             if (notes[p].Value == 1) {
-            command.Command = MIDICommand::NOTEOFF;
+            command.Command = MIDICommands::NOTEOFF;
             }
 
             SendMIDI(command);

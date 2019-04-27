@@ -8,6 +8,7 @@
   #include "WConstants.h"
 #endif
 
+#include "MIDICommands.h"
 #include "ShiftRegister.h"
 #include "ControlOut.h"
 #include "MIDICommand.h"
